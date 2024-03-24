@@ -17,19 +17,23 @@ def search(keyword):
 def main():
     st.title('Scraped Data')
 
+    # Display scraped data
+    st.header('Scraped Data')
+    data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
+    for i, row in enumerate(data_from_scraped_data_csv[:10]):
+        st.write(f'{i+1}. {row}')
+
+    # Search functionality
+    st.header('Search Data')
     keyword = st.text_input('Enter Keyword')
     if st.button('Search'):
         search_results = search(keyword)
         if search_results:
             st.write('Search Results:')
-            st.write(search_results)
+            for result in search_results:
+                st.write(result)
         else:
             st.write('No results found.')
-
-    st.write('Top 10 Entries:')
-    data_from_scraped_data_csv = read_data_from_csv('scraped_data.csv')
-    for i, row in enumerate(data_from_scraped_data_csv[:10]):
-        st.write(f'{i+1}. {row}')
 
 if __name__ == '__main__':
     main()
