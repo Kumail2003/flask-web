@@ -3,17 +3,23 @@ import csv
 
 def read_data_from_csv(filename):
     data = []
-    with open(filename, 'r', newline='', encoding='latin-1') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            data.append(row)
+    try:
+        with open(filename, 'r', newline='', encoding='latin-1') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                data.append(row)
+    except FileNotFoundError:
+        st.error(f"File '{filename}' not found.")
+    except Exception as e:
+        st.error(f"An error occurred while reading the file '{filename}': {str(e)}")
     return data
+
 
 def main():
     st.title('Data Viewer')
 
     # Read data from CSV
-    data_from_scraped_data_csv = read_data_from_csv('scraped_data.csv')
+   data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
 
     # Display the data
     st.write('## Top 10 Data Entries')
@@ -36,6 +42,6 @@ def main():
 
 if __name__ == '__main__':
     
-    data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
+    
 
     main()
