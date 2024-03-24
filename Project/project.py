@@ -1,45 +1,29 @@
 import streamlit as st
-import csv
+import pandas as pd
 
 def read_data_from_csv(filename):
-    data = []
-    try:
-        with open(filename, 'r', newline='', encoding='latin-1') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                data.append(row)
-    except FileNotFoundError:
-        st.error(f"File '{filename}' not found.")
-    except Exception as e:
-        st.error(f"An error occurred while reading the file '{filename}': {str(e)}")
-    return data
-
+    return pd.read_csv(filename)
 
 def main():
-    st.title('Data Viewer')
+    st.title('Scraped Data Viewer')
 
     # Read data from CSV
-    data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
+    data_from_scraped_data_csv = read_data_from_csv('scraped_data.csv')
 
-    # Display the data
+    # Display the top 10 data entries in a table
     st.write('## Top 10 Data Entries')
-    enumerated_data = [(i + 1, row) for i, row in enumerate(data_from_scraped_data_csv[:10])]
-    for index, row in enumerated_data:
-        st.write(f"### Entry {index}")
-        st.write(row)
+    st.write(data_from_scraped_data_csv.head(10))
 
     # Search functionality
     st.sidebar.title("Search")
     keyword = st.sidebar.text_input("Enter keyword:")
     if keyword:
-        filtered_data = [row for row in data_from_scraped_data_csv if any(keyword.lower() in str(value).lower() for value in row.values())]
-        if filtered_data:
+        filtered_data = data_from_scraped_data_csv[data_from_scraped_data_csv.apply(lambda row: keyword.lower() in row.astype(str).str.lower().values, axis=1)]
+        if not filtered_data.empty:
             st.write('## Search Results')
-            for row in filtered_data:
-                st.write(row)
+            st.write(filtered_data)
         else:
             st.write("No results found for the given keyword.")
 
 if __name__ == '__main__':
     main()
-
