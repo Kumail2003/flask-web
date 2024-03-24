@@ -19,24 +19,18 @@ def main():
 
     # Read data from CSV
     data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
+    
+    # Log data type and structure
+    print("Type of data:", type(data_from_scraped_data_csv))
+    print("Data structure:", data_from_scraped_data_csv)
 
     # Display the top 10 data entries in a table
     st.write('## Top 10 Data Entries')
-    st.table(data_from_scraped_data_csv.head(10))
+    if isinstance(data_from_scraped_data_csv, pd.DataFrame):
+        st.table(data_from_scraped_data_csv.head(10))
+    else:
+        st.error("Failed to load data from CSV file. Please check the data structure.")
 
-    # Search functionality
-    st.sidebar.title("Search")
-    keyword = st.sidebar.text_input("Enter keyword:")
-    if keyword:
-        filtered_data = data_from_scraped_data_csv[data_from_scraped_data_csv.apply(lambda row: keyword.lower() in row.astype(str).str.lower().values, axis=1)]
-        if not filtered_data.empty:
-            st.write('## Search Results (Tabular Format)')
-            st.table(filtered_data)
-
-            st.write('## Search Results (JSON Format)')
-            st.json(filtered_data.to_dict(orient='records'))
-        else:
-            st.write("No results found for the given keyword.")
 
 if __name__ == '__main__':
     main()
