@@ -2,7 +2,16 @@ import streamlit as st
 import pandas as pd
 
 def read_data_from_csv(filename):
-    return pd.read_csv(filename)
+    try:
+        data = pd.read_csv(filename, encoding='utf-8')
+        print("CSV file successfully loaded.")
+        return data
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found.")
+        return None
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 def main():
     st.title('Scraped Data Viewer')
