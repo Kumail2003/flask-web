@@ -18,7 +18,8 @@ def main():
     st.sidebar.title("Search")
     keyword = st.sidebar.text_input("Enter keyword:")
     if keyword:
-        filtered_data = data_from_scraped_data_csv[data_from_scraped_data_csv.apply(lambda row: keyword.lower() in row.astype(str).str.lower().values, axis=1)]
+        filtered_data = data_from_scraped_data_csv[data_from_scraped_data_csv.apply(lambda row: any(keyword.lower() in str(cell).lower() for cell in row), axis=1)]
+
         if not filtered_data.empty:
             st.write('## Search Results (Tabular Format)')
             st.table(filtered_data)
