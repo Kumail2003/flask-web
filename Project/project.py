@@ -17,11 +17,10 @@ def search(keyword):
 def main():
     st.title('Scraped Data')
 
-    # Display scraped data
+    # Display scraped data in a table
     st.header('Scraped Data')
     data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
-    for i, row in enumerate(data_from_scraped_data_csv[:10]):
-        st.write(f'{i+1}. {row}')
+    st.table(data_from_scraped_data_csv[:10])
 
     # Search functionality
     st.header('Search Data')
