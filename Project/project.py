@@ -3,7 +3,7 @@ import pandas as pd
 
 def read_data_from_csv(filename):
     try:
-        data = pd.read_csv(filename, encoding='utf-8')
+        data = pd.read_csv(filename)
         print("CSV file successfully loaded.")
         return data
     except FileNotFoundError:
@@ -12,6 +12,7 @@ def read_data_from_csv(filename):
     except Exception as e:
         print(f"Error: {e}")
         return None
+
 
 
 def main():
