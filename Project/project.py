@@ -10,7 +10,7 @@ def read_data_from_csv(filename):
     return data
 
 def search(keyword):
-    data_from_scraped_data_csv = read_data_from_csv('scraped_data.csv')
+    data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
     filtered_data = [row for row in data_from_scraped_data_csv if any(keyword.lower() in str(value).lower() for value in row.values())]
     return filtered_data
 
