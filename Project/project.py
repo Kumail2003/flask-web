@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 import csv
 
 def read_data_from_csv(filename):
@@ -17,10 +18,13 @@ def search(keyword):
 def main():
     st.title('Scraped Data')
 
-    # Display scraped data in a table
-    st.header('Scraped Data')
+    # Read scraped data from CSV
     data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
-    st.table(data_from_scraped_data_csv[:10])
+
+    # Display the first 10 entries of scraped data in a table
+    st.header('First 10 Entries of Scraped Data')
+    df_first_10_entries = pd.DataFrame(data_from_scraped_data_csv[:10])
+    st.write(df_first_10_entries)
 
     # Search functionality
     st.header('Search Data')
