@@ -35,4 +35,7 @@ def main():
             st.write("No results found for the given keyword.")
 
 if __name__ == '__main__':
+    
+    data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
+
     main()
