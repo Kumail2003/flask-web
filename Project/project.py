@@ -1,14 +1,14 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
 
 def read_data_from_csv(filename, encoding='utf-8'):
     try:
-        data = pd.read_csv(filename, encoding=encoding, error_bad_lines=False)
+        data = pd.read_csv(filename, encoding=encoding)
         return data
-    except pd.errors.ParserError as e:
-        st.error(f"Error reading CSV file: {e}")
     except Exception as e:
-        st.error(f"An error occurred: {e}")
+        st.error(f"Error reading CSV file: {e}")
+
+# Rest of your code remains the same
 
 
 
