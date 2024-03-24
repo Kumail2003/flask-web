@@ -1,12 +1,16 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
 
 def read_data_from_csv(filename, encoding='utf-8'):
     try:
         data = pd.read_csv(filename, encoding=encoding, error_bad_lines=False)
         return data
-    except Exception as e:
+    except pd.errors.ParserError as e:
         st.error(f"Error reading CSV file: {e}")
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+
+
 
 def search(keyword, data):
     filtered_data = data[data.apply(lambda row: keyword.lower() in str(row).lower(), axis=1)]
