@@ -1,7 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+import streamlit as st
 import csv
-
-app = Flask(__name__)
 
 def read_data_from_csv(filename):
     data = []
@@ -11,24 +9,30 @@ def read_data_from_csv(filename):
             data.append(row)
     return data
 
-@app.route('/')
-def index():
+def main():
+    st.title('Data Viewer')
+
+    # Read data from CSV
     data_from_scraped_data_csv = read_data_from_csv('scraped_data.csv')
-    # Enumerate the data with index starting from 1
+
+    # Display the data
+    st.write('## Top 10 Data Entries')
     enumerated_data = [(i + 1, row) for i, row in enumerate(data_from_scraped_data_csv[:10])]
-    return render_template('index1.html', data=enumerated_data, search_results=[])
+    for index, row in enumerated_data:
+        st.write(f"### Entry {index}")
+        st.write(row)
 
-@app.route('/search', methods=['POST'])
-def search():
-    keyword = request.form.get('keyword')
-    data_from_scraped_data_csv = read_data_from_csv('scraped_data.csv')
-    filtered_data = [row for row in data_from_scraped_data_csv if any(keyword.lower() in str(value).lower() for value in row.values())]
-    
-    # Ensure search_results is always initialized as an empty list
-    search_results = filtered_data if filtered_data else []
-
-    return jsonify(search_results)
-
+    # Search functionality
+    st.sidebar.title("Search")
+    keyword = st.sidebar.text_input("Enter keyword:")
+    if keyword:
+        filtered_data = [row for row in data_from_scraped_data_csv if any(keyword.lower() in str(value).lower() for value in row.values())]
+        if filtered_data:
+            st.write('## Search Results')
+            for row in filtered_data:
+                st.write(row)
+        else:
+            st.write("No results found for the given keyword.")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    main()
