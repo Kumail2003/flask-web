@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 
 def read_data_from_csv(filename):
-    return pd.read_csv(filename)
+    return pd.read_csv(filename, encoding='utf-8')
+
 
 def main():
     st.title('Scraped Data Viewer')
