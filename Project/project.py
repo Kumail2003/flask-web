@@ -3,7 +3,7 @@ import pandas as pd
 
 def read_data_from_csv(filename, encoding='utf-8'):
     try:
-        data = pd.read_csv(filename, encoding=encoding)
+        data = pd.read_csv(filename, encoding=encoding, error_bad_lines=False)
         return data
     except Exception as e:
         st.error(f"Error reading CSV file: {e}")
