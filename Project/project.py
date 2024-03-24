@@ -8,7 +8,7 @@ def main():
     st.title('Scraped Data Viewer')
 
     # Read data from CSV
-    data_from_scraped_data_csv = read_data_from_csv('scraped_data.csv')
+    data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
 
     # Display the top 10 data entries in a table
     st.write('## Top 10 Data Entries')
