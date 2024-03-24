@@ -2,33 +2,32 @@ import streamlit as st
 import pandas as pd
 
 def read_data_from_csv(filename):
-    return pd.read_csv(filename, encoding='utf-8')
+    data = pd.read_csv(filename, encoding='latin-1')
+    return data
 
+def search(keyword, data):
+    filtered_data = data[data.apply(lambda row: keyword.lower() in str(row).lower(), axis=1)]
+    return filtered_data
 
 def main():
-    st.title('Scraped Data Viewer')
+    st.title('Data Search App')
 
-    # Read data from CSV
     data_from_scraped_data_csv = read_data_from_csv('Project/scraped_data.csv')
 
-    # Display the top 10 data entries in a table
-    st.write('## Top 10 Data Entries')
-    st.table(data_from_scraped_data_csv.head(10))
+    st.write("## Data")
 
-    # Search functionality
-    st.sidebar.title("Search")
-    keyword = st.sidebar.text_input("Enter keyword:")
-    if keyword:
-        filtered_data = data_from_scraped_data_csv[data_from_scraped_data_csv.apply(lambda row: any(keyword.lower() in str(cell).lower() for cell in row), axis=1)]
+    # Display the first 10 rows of the data
+    st.write(data_from_scraped_data_csv.head(10))
 
-        if not filtered_data.empty:
-            st.write('## Search Results (Tabular Format)')
-            st.table(filtered_data)
+    st.write("## Search")
 
-            st.write('## Search Results (JSON Format)')
-            st.json(filtered_data.to_dict(orient='records'))
+    keyword = st.text_input("Enter keyword:")
+    if st.button("Search"):
+        filtered_data = search(keyword, data_from_scraped_data_csv)
+        if filtered_data.empty:
+            st.write("No results found.")
         else:
-            st.write("No results found for the given keyword.")
+            st.write(filtered_data)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
